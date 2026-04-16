@@ -18,7 +18,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use((req, _res, next) => {
   const isAssetRequest = /\.[a-zA-Z0-9]+$/.test(req.url);
 
-  if (process.env.VERCEL && !req.url.startsWith('/api/') && !isAssetRequest) {
+  if (process.env.VERCEL && req.url !== '/' && !req.url.startsWith('/api/') && !isAssetRequest) {
     req.url = `/api${req.url}`;
   }
 
@@ -35,6 +35,9 @@ app.get('/api/health', (_req, res) => {
 });
 app.get("/", (_req, res) => {
   res.send("Welcome to the Dentes Clinic API");
+});
+app.get('/api', (_req, res) => {
+  res.send('Welcome to the Dentes Clinic API');
 });
 
 app.use('/api', async (req, res, next) => {
